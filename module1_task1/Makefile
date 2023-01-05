@@ -1,5 +1,5 @@
 build:
-	hugo -D
+	hugo --cleanDestinationDir -D
 clean:
 	rm -rf dist/
 post:
