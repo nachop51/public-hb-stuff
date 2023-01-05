@@ -1,6 +1,6 @@
 #!/bin/bash
 apt-get update
-apt-get install -y hugo make
+apt-get install -y make
 apt-get install -y wget
 
 cd /tmp
