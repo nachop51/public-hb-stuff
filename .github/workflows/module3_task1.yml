@@ -18,4 +18,4 @@ jobs:
       - name: Setup
         run: cd module3_task1/ && ./setup.sh
       - name: Build
-        run: ls && make build
+        run: cd module3_task1/ && make build
