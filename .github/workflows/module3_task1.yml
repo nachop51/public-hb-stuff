@@ -15,7 +15,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Setup
-        run: cd module3_task1/ && ./setup.sh
+      - name: Setup environment
+        run: cd module3_task1/ && sudo ./setup.sh
       - name: Build
         run: cd module3_task1/ && make build
+      - name: Help command
+	run: cd module3_task1/ && make help
+      - name: Create post
+	run: cd module3_task1/ && make POST_NAME=testing POST_TITLE=Test post
+      - name: Clean command
+	run: cd module3_task1/ && make clean
+      - name: Specific help command
+	run: cd module3_task1/ && make help clean
