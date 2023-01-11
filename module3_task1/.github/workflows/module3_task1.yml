@@ -1,3 +1,4 @@
+---
 name: module3_task1
 
 on:
@@ -20,10 +21,10 @@ jobs:
       - name: Build
         run: cd module3_task1/ && make build
       - name: Help command
-	run: cd module3_task1/ && make help
+        run: cd module3_task1/ && make help
       - name: Create post
-	run: cd module3_task1/ && make POST_NAME=testing POST_TITLE=Test post
+        run: cd module3_task1/ && make POST_NAME=testing POST_TITLE=Test post
       - name: Clean command
-	run: cd module3_task1/ && make clean
+        run: cd module3_task1/ && make clean
       - name: Specific help command
-	run: cd module3_task1/ && make help clean
+        run: cd module3_task1/ && make help clean
