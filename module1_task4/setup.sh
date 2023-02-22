@@ -1,13 +1,9 @@
 #!/bin/bash
-apt-get update && apt-get upgrade -y
-apt-get install -y make
-apt-get install -y wget
+apt-get update
+apt-get install -y make wget
 
-cd /tmp
 wget "https://github.com/gohugoio/hugo/releases/download/v0.84.0/hugo_0.84.0_Linux-64bit.tar.gz"
-tar -xf "hugo_0.84.0_Linux-64bit.tar.gz"
-mv ./hugo /usr/bin/hugo
-cd /app
-rm -rf /tmp
+tar -xvf hugo_0.84.0_Linux-64bit.tar.gz hugo
+mv hugo /usr/local/bin/
 
 make build
