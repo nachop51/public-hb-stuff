@@ -8,7 +8,7 @@ run: ## Run the application
 stop: ## Stop the app
 	@pkill awesome-api
 
-clean: ## Cleanup the content of the 'dist/' folder
+clean: stop ## Cleanup the content of the 'dist/' folder
 	@rm -rf dist/
 	@rm -f awesome-api awesome.log
 
