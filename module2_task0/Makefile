@@ -14,8 +14,8 @@ clean: ## Cleanup the content of the 'dist/' folder
 
 test: ## Tests the application
 	@echo "Test"
-	@if curl 0:9999; then echo "\nOK"; else echo "ERROR"; fi
-	@if curl 0:9999/health; then echo "\nOK"; else echo "ERROR"; fi
+	@if curl http://localhost:9999; then echo "\nOK"; else echo "ERROR"; fi
+	@if curl http://localhost:9999/health; then echo "\nOK"; else echo "ERROR"; fi
 
 post: ## Create a new blog post using POST_TITLE and POST_NAME env variables
 	hugo new posts/$(POST_NAME).md
