@@ -1,3 +1,9 @@
+lint: ## Runs a lint tool
+	@golangci-lint run ./*.go
+
+unit-tests: ## Runs unit tests in order to test the code
+	@go test -v -short -coverprofile=coverage-units.out
+
 build: ## Generate the website from markdown
 	@hugo
 	@go build -o awesome-api ./*.go
@@ -20,12 +26,6 @@ test: ## Tests the application
 post: ## Create a new blog post using POST_TITLE and POST_NAME env variables
 	hugo new posts/$(POST_NAME).md
 	sed -i '/title:/c\title: "$(POST_TITLE)"' content/posts/$(POST_NAME).md
-
-lint: ## Runs a lint tool
-	@golangci-lint run ./*.go
-
-unit-tests: ## Runs unit tests in order to test the code
-	@go test -v -short -coverprofile=coverage-units.out
 
 help: ## Show this help.
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
