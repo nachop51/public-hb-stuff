@@ -1,5 +1,5 @@
 lint: ## Runs a lint tool
-	@golangci-lint run ./*.go
+	@golangci-lint run *.go
 
 build: lint ## Generate the website from markdown
 	@hugo
@@ -9,7 +9,7 @@ run: ## Run the application
 	./awesome-api >./awesome.log 2>&1 &
 
 stop: ## Stop the app
-	@pkill awesome-api
+	@pkill awesome-api || true
 
 clean: stop ## Cleanup the content of the 'dist/' folder
 	@rm -rf dist/
