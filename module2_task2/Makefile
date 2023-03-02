@@ -1,10 +1,10 @@
-lint: ## Runs a lint tool
-	@golangci-lint run ./*.go
-
 unit-tests: ## Runs unit tests in order to test the code
 	@go test -v -short -coverprofile=coverage-units.out
 
-build: ## Generate the website from markdown
+lint: ## Runs a lint tool
+	@golangci-lint run *.go
+
+build: lint ## Generate the website from markdown
 	@hugo
 	@go build -o awesome-api ./*.go
 
@@ -12,7 +12,7 @@ run: ## Run the application
 	./awesome-api >./awesome.log 2>&1 &
 
 stop: ## Stop the app
-	@pkill awesome-api
+	@pkill awesome-api || true
 
 clean: stop ## Cleanup the content of the 'dist/' folder
 	@rm -rf dist/
