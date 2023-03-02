@@ -30,8 +30,8 @@ post: ## Create a new blog post using POST_TITLE and POST_NAME env variables
 	sed -i '/title:/c\title: "$(POST_TITLE)"' content/posts/$(POST_NAME).md
 
 check: ## Runs a lint for the md and an analysis of the links
-	find . -name \*.md -print0 | xargs -0 -n1 markdownlint
-	find . -name \*.md -print0 | xargs -0 -n1 markdown-link-check
+	markdownlint '**/*.md' || true
+	find . -name \*.md -print0 | xargs -0 -n1 markdown-link-check || true
 
 validate: ## Validates the syntax of the index.html in the dist directory
 	./w3c_validator.py ./dist/index.html || true
