@@ -7,7 +7,7 @@ unit-tests: ## Runs unit tests in order to test the code
 lint: ## Runs a lint tool
 	@golangci-lint run *.go
 
-build: lint ## Generate the website from markdown
+build: lint check ## Generate the website from markdown
 	@hugo
 	@go build -o awesome-api ./*.go
 
