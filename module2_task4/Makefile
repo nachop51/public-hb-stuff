@@ -16,7 +16,6 @@ validate: ## Validates the syntax of the index.html in the dist directory
 
 
 build: lint check ## Generate the website from markdown
-	@hugo
 	@go build -o awesome-api ./*.go
 
 run: ## Run the application
