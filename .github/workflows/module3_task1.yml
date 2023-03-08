@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
       - name: Setup environment
         run: sudo ./setup.sh
       - name: Build
@@ -28,5 +30,3 @@ jobs:
         run: make POST_NAME=testing POST_TITLE=Test post
       - name: Clean command
         run: make clean
-      - name: Runs lint
-        run: make lint
