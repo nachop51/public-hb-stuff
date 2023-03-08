@@ -1,4 +1,5 @@
-./dist/
 dist/
 awesome-api
 awesome.log
+coverage-units.out
+coverage-intregrations.out

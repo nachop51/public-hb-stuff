@@ -12,14 +12,14 @@ check: ## Runs a lint for the md and an analysis of the links
 	@find ./content -name \*.md -print0 | xargs -0 -n1 markdown-link-check
 
 validate: ## Validates the syntax of the index.html in the dist directory
-	./w3c_validator.py ./dist/index.html || true
+	@./w3c_validator.py ./dist/index.html || true
 
 build: lint check ## Generate the website from markdown
 	@hugo
 	@go build -o awesome-api ./*.go
 
 run: ## Run the application
-	./awesome-api >./awesome.log 2>&1 &
+	@./awesome-api >./awesome.log 2>&1 &
 
 stop: ## Stop the app
 	@pkill awesome-api || true
