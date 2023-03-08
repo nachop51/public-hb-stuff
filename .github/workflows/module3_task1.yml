@@ -1,0 +1,32 @@
+---
+name: module3_task1
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  push:
+    branches:
+      - main
+
+jobs:
+  run-test:
+    name: Build workflow
+    runs-on: ubuntu-18.04
+    defaults:
+      run:
+        working-directory: ./module3_task1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup environment
+        run: sudo ./setup.sh
+      - name: Build
+        run: make build
+      - name: Help command
+        run: make help
+      - name: Create post
+        run: make POST_NAME=testing POST_TITLE=Test post
+      - name: Clean command
+        run: make clean
+      - name: Runs lint
+        run: make lint
