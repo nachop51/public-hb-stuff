@@ -28,6 +28,12 @@ jobs:
         run: make POST_NAME=testing POST_TITLE=Test post
       - name: Creates a package
         run: make package
+      - name: Runs unit tests
+        run: make unit-tests
+      - name: Runs integration tests
+        run: make integration-tests
+      - name: Runs the validation
+        run: make validate
       - name: Clean command
         run: make clean
       - name: Linting
