@@ -26,10 +26,10 @@ jobs:
         run: make help
       - name: Create post
         run: make POST_NAME=testing POST_TITLE=Test post
-      - name: Clean command
-        run: make clean
       - name: Creates a package
         run: make package
+      - name: Clean command
+        run: make clean
       - name: Linting
         run: make lint
       - name: Save workflow
