@@ -1,5 +1,6 @@
 # DEPLOY.md
-* What is in the archive and how to unarchive it?   
+
+* What is in the archive and how to unarchive it?
 
 hello world.  
 
