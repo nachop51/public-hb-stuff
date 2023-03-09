@@ -26,3 +26,17 @@ should be **absent** from the repo.
 - integration-tests
 - check
 - validate
+
+## Workflow
+* Clone the repository.
+* Check the clonation with `make help` command.
+
+## Build Workflow
+* Modified `setup.sh` to install requeried tools
+* Clone the repository.
+* Use `make build`
+
+## GitHub Tag
+* GitHub Tag now present to show the working version
+
+Use `make help` if you need help
