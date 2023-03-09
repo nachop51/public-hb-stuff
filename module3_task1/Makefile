@@ -9,7 +9,6 @@ validate: ## Validates the syntax of the index.html in the dist directory
 
 build: ## Generate the website from markdown
 	@hugo
-	@go build -o awesome-api ./*.go
 
 run: ## Run the application
 	@./awesome-api >./awesome.log 2>&1 &
