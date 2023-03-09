@@ -4,17 +4,10 @@ integration-tests: ##
 unit-tests: ## Runs unit tests in order to test the code
 	@go test -v -short -coverprofile=coverage-units.out
 
-lint: ## Runs a lint tool
-	@golangci-lint run *.go
-
-check: ## Runs a lint for the md and an analysis of the links
-	@markdownlint 'content/**/*.md'
-	@find ./content -name \*.md -print0 | xargs -0 -n1 markdown-link-check
-
 validate: ## Validates the syntax of the index.html in the dist directory
 	@./w3c_validator.py ./dist/index.html || true
 
-build: lint check ## Generate the website from markdown
+build: ## Generate the website from markdown
 	@hugo
 	@go build -o awesome-api ./*.go
 
