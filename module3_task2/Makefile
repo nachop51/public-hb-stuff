@@ -36,4 +36,3 @@ post: ## Create a new blog post using POST_TITLE and POST_NAME env variables
 
 help: ## Show this help.
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
-
