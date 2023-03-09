@@ -10,7 +10,7 @@ on:
 
 jobs:
   run-test:
-    name: Build workflow
+    name: CD
     runs-on: ubuntu-18.04
     defaults:
       run:
