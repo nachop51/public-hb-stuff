@@ -1,14 +1,15 @@
 # DEPLOY.md
-* What is in the archive and how to unarchive it?   
+
+* What is in the archive and how to unarchive it?
 
 hello world.  
 
 --  
 
-* What are the commands to start and stop the application?  
+## What are the commands to start and stop the application?  
 
- - `make build` start the app.
- - `Ctrl + C` stop the app.
+* `make build` start the app.
+* `Ctrl + C` stop the app.
 
 --  
 

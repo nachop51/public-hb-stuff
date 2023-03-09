@@ -28,15 +28,18 @@ should be **absent** from the repo.
 - validate
 
 ## Workflow
-* Clone the repository.
-* Check the clonation with `make help` command.
+
+- Clone the repository.
+- Check the clonation with `make help` command.
 
 ## Build Workflow
-* Modified `setup.sh` to install requeried tools
-* Clone the repository.
-* Use `make build`
+
+- Modified `setup.sh` to install requeried tools
+- Clone the repository.
+- Use `make build`
 
 ## GitHub Tag
-* GitHub Tag now present to show the working version
+
+- GitHub Tag now present to show the working version
 
 Use `make help` if you need help
