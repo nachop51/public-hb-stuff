@@ -8,4 +8,3 @@ tar -xvf hugo_extended_0.109.0_Linux-64bit.tar.gz hugo
 mv hugo /usr/local/bin/
 rm hugo_extended_0.109.0_Linux-64bit.tar.gz
 
-make build
