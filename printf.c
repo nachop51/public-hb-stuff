@@ -17,7 +17,8 @@ int _printf(const char *format, ...)
 		{'d', p_int},
 		{'i', p_int},
 		{'%', p_percent},
-		{'\0', NULL}};
+		{'\0', NULL}
+	};
 
 	if (!format)
 		return (-1);
