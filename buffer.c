@@ -56,6 +56,6 @@ int write_buffer_str_n(buffer_t *buffer, char *str, int n)
 	int i = 0;
 
 	while (str[i] && i < n)
-		write_buffer(buffer, str[i++]), buffer->counter++;
+		write_buffer(buffer, str[i++]);
 	return (i);
 }

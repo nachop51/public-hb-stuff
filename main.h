@@ -68,6 +68,7 @@ void p_string_ascii(buffer_t *buffer, va_list args);
 void p_rot13(buffer_t *buffer, va_list args);
 
 void print_base(unsigned int n, char *base, int base_len, buffer_t *buffer);
-void print_base_long(unsigned long n, char *base, int base_len, buffer_t *buffer);
+void print_base_long(unsigned long n, char *base,
+					 int base_len, buffer_t *buffer);
 
 #endif /* PRINTF_H */
