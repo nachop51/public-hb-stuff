@@ -25,6 +25,6 @@ void print_base_long(unsigned long n, char *base,
 					 int base_len, buffer_t *buffer)
 {
 	if (n / base_len)
-		print_base(n / base_len, base, base_len, buffer);
+		print_base_long(n / base_len, base, base_len, buffer);
 	write_buffer(buffer, base[n % base_len]);
 }
