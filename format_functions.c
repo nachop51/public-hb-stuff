@@ -60,7 +60,7 @@ void p_int(buffer_t *buffer, va_list args)
 			write_buffer(buffer, ' ');
 	}
 	else
-		write_buffer(buffer, '-'), n = -n;
+		write_buffer(buffer, '-'), n = -n, long_n = -long_n;
 
 	if (buffer->mod.length & LENGTH_L)
 		print_base_long(long_n, "0123456789", 10, buffer);
