@@ -26,8 +26,7 @@ int _printf(const char *format, ...)
 		{'r', p_reverse},
 		{'S', p_string_ascii},
 		{'R', p_rot13},
-		{'\0', NULL}
-	};
+		{'\0', NULL}};
 	buffer_t buffer = {0};
 
 	if (!format)
@@ -58,18 +57,17 @@ int _printf_helper(const char *format, print_t p[],
 {
 	int i = 0, ret = 0;
 
-	for (i = 0; format[i]; i++)
+	while (format[i])
 	{
 		if (format[i] != '%')
 		{
-			write_buffer(buffer, format[i]);
+			i += write_buffer(buffer, format[i]);
 			continue;
 		}
-		if (!format[i + 1])
-			return (-1);
-		ret = to_format(format + i + 1, p, buffer, args), i++;
+		ret = to_format(format + i, p, buffer, args);
 		if (ret == -1)
 			return (-1);
+		i += ret;
 	}
 	return (ret);
 }
@@ -81,20 +79,28 @@ int _printf_helper(const char *format, print_t p[],
  * @buffer: Buffer to write to
  * @args: Arguments to format string
  *
- * Return: 1 on success, -1 on failure
+ * Return: How much to increment i in
+ * _printf_helper, or -1 on error
  */
 int to_format(const char *format, print_t p[], buffer_t *buffer, va_list args)
 {
-	int i = 0;
+	int i = 0, j = 1, increment = 2; /* j starts in 1 beacuse 0 is the '%' */
+	/* increment starts in 2 because we already have the '%' and the type */
 
-	while (p[i].type)
+	reset_modifiers(buffer);
+	for (; format[j] && format[j] != '%'; j++)
 	{
-		if (p[i].type == format[0])
+		i = 0;
+		while (p[i].type)
 		{
-			p[i].f(buffer, args);
-			return (1);
+			if (p[i].type == format[j])
+			{
+				increment += detect_modifiers(format, buffer, j);
+				p[i].f(buffer, args);
+				return (increment);
+			}
+			i++;
 		}
-		i++;
 	}
-	return (write_buffer(buffer, '%') + write_buffer(buffer, format[0]));
+	return (write_buffer_str_n(buffer, (char *)format, j));
 }

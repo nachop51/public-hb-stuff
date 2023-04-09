@@ -7,11 +7,13 @@
 void init_buffer(buffer_t *buffer)
 {
 	int i = 0;
+	mod_t mod = {0, 0, 0, 0};
 
 	buffer->i = 0;
 	buffer->counter = 0;
 	while (i < BUFFER_SIZE)
 		buffer->buf[i++] = '\0';
+	buffer->mod = mod;
 }
 
 /**

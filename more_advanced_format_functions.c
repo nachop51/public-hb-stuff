@@ -58,7 +58,7 @@ void p_pointer(buffer_t *buffer, va_list args)
 
 	if (!p)
 	{
-		write_buffer_str_n(buffer, "(null)", 6);
+		write_buffer_str_n(buffer, "(nil)", 6);
 		return;
 	}
 	write_buffer(buffer, '0'), write_buffer(buffer, 'x');
@@ -102,5 +102,10 @@ void p_string_ascii(buffer_t *buffer, va_list args)
  */
 void p_u_int(buffer_t *buffer, va_list args)
 {
-	print_base(va_arg(args, unsigned int), "0123456789", 10, buffer);
+	if (buffer->mod.length & LENGTH_L)
+		print_base_long(va_arg(args, unsigned long), "0123456789", 10, buffer);
+	else if (buffer->mod.length & LENGTH_H)
+		print_base_short(va_arg(args, unsigned int), "0123456789", 10, buffer);
+	else
+		print_base(va_arg(args, unsigned int), "0123456789", 10, buffer);
 }

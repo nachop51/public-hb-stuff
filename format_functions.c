@@ -44,11 +44,28 @@ void p_percent(buffer_t *buffer, va_list args)
  */
 void p_int(buffer_t *buffer, va_list args)
 {
-	int n = va_arg(args, int);
-	long int i;
+	int n = 0;
+	long int long_n = 0;
 
-	n < 0 ? write_buffer(buffer, '-') : 0;
-	n = (n < 0 ? -n : n);
-	i = n;
-	print_base(i, "0123456789", 10, buffer);
+	if (buffer->mod.length & LENGTH_L)
+		long_n = va_arg(args, long int);
+	else
+		n = va_arg(args, int);
+
+	if (n > 0 || long_n > 0)
+	{
+		if (buffer->mod.flags & FLAG_PLUS)
+			write_buffer(buffer, '+');
+		else if (buffer->mod.flags & FLAG_SPACE)
+			write_buffer(buffer, ' ');
+	}
+	else
+		write_buffer(buffer, '-'), n = -n;
+
+	if (buffer->mod.length & LENGTH_L)
+		print_base_long(long_n, "0123456789", 10, buffer);
+	else if (buffer->mod.length & LENGTH_H)
+		print_base_short(n, "0123456789", 10, buffer);
+	else
+		print_base(n, "0123456789", 10, buffer);
 }

@@ -8,6 +8,23 @@
 
 #define BUFFER_SIZE 1024
 
+#define FLAG_MINUS 1
+#define FLAG_ZERO 2
+#define FLAG_PLUS 4
+#define FLAG_SPACE 8
+#define FLAG_HASH 16
+
+#define LENGTH_H 1
+#define LENGTH_L 2
+
+typedef struct modifiers
+{
+	char flags;
+	int width;
+	int precision;
+	char length;
+} mod_t;
+
 /**
  * struct buffer - Struct buffer
  * @buf: The buffer
@@ -18,6 +35,7 @@ typedef struct buffer
 	char buf[BUFFER_SIZE];
 	int i;
 	int counter;
+	mod_t mod;
 } buffer_t;
 
 /**
@@ -50,8 +68,9 @@ int to_format(const char *format, print_t p[], buffer_t *buffer, va_list args);
 int _stdout(char c);
 int _strlen(char *s);
 int _is_alpha(char c);
+int _atoi(const char *s);
 
-/* format_functions.c */
+/* Format functions */
 
 void p_str(buffer_t *buffer, va_list args);
 void p_char(buffer_t *buffer, va_list args);
@@ -67,8 +86,19 @@ void p_reverse(buffer_t *buffer, va_list args);
 void p_string_ascii(buffer_t *buffer, va_list args);
 void p_rot13(buffer_t *buffer, va_list args);
 
+/* print_base.c */
+
 void print_base(unsigned int n, char *base, int base_len, buffer_t *buffer);
 void print_base_long(unsigned long n, char *base,
 					 int base_len, buffer_t *buffer);
+void print_base_short(unsigned short int n, char *base,
+					  int base_len, buffer_t *buffer);
+
+/* modifiers.c */
+
+int detect_modifiers(const char *format, buffer_t *buffer, int j);
+void reset_modifiers(buffer_t *buffer);
+int is_flag(char c, buffer_t *buffer);
+int is_length(char c, buffer_t *buffer);
 
 #endif /* PRINTF_H */
