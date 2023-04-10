@@ -74,6 +74,10 @@ int is_flag(char c, buffer_t *buffer)
 	char *flags = "-0+ #";
 	int i = 0;
 
+	if (buffer->mod.width != 0 ||
+		buffer->mod.precision != 0 ||
+		buffer->mod.length != 0)
+		return (0);
 	for (; flags[i]; i++)
 	{
 		if (c == flags[i])
@@ -103,5 +107,18 @@ int is_length(char c, buffer_t *buffer)
 			return (1);
 		}
 	}
+	return (0);
+}
+
+/**
+ * possible_modifier - Check if a character is a possible modifier
+ * @c: Character to check
+ * Return: 1 if it is, 0 if it isn't
+ */
+int possible_modifier(char c, buffer_t *buffer)
+{
+	if (is_flag(c, buffer) || is_length(c, buffer) ||
+		(c >= '0' && c <= '9') || c == '.')
+		return (1);
 	return (0);
 }

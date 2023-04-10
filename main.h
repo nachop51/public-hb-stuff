@@ -100,5 +100,7 @@ int detect_modifiers(const char *format, buffer_t *buffer, int j);
 void reset_modifiers(buffer_t *buffer);
 int is_flag(char c, buffer_t *buffer);
 int is_length(char c, buffer_t *buffer);
+int possible_modifier(char c, buffer_t *buffer);
+void call_modifiers(buffer_t *buffer);
 
 #endif /* PRINTF_H */

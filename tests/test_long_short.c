@@ -10,7 +10,6 @@
 int main(void)
 {
 	int len, len2;
-	/*
 	len = _printf("%hu\n", 578344225874334);
 	len2 = printf("%hu\n", 578344225874334);
 	_printf("len: %d, len2: %d\n", len, len2);
@@ -20,8 +19,7 @@ int main(void)
 	len = _printf("%lu\n", 578344225874334);
 	len2 = printf("%lu\n", 578344225874334);
 	_printf("len: %d, len2: %d\n", len, len2);
-	*/
-	/*
+
 	len = _printf("%hd\n", 578344225874334L);
 	len2 = printf("%hd\n", 578344225874334L);
 	_printf("len: %d, len2: %d\n", len, len2);
@@ -31,7 +29,6 @@ int main(void)
 	len = _printf("%ld\n", 578344225874334L);
 	len2 = printf("%ld\n", 578344225874334L);
 	_printf("len: %d, len2: %d\n", len, len2);
-	*/
 
 	len = _printf("%hx\n", 578344225874334L);
 	len2 = printf("%hx\n", 578344225874334L);

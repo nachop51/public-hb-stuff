@@ -26,7 +26,8 @@ int _printf(const char *format, ...)
 		{'r', p_reverse},
 		{'S', p_string_ascii},
 		{'R', p_rot13},
-		{'\0', NULL}};
+		{'\0', NULL}
+	};
 	buffer_t buffer = {0};
 
 	if (!format)
@@ -85,12 +86,14 @@ int _printf_helper(const char *format, print_t p[],
 int to_format(const char *format, print_t p[], buffer_t *buffer, va_list args)
 {
 	int i = 0, j = 1, increment = 2; /* j starts in 1 beacuse 0 is the '%' */
+	int flag = 0;
 	/* increment starts in 2 because we already have the '%' and the type */
 
 	reset_modifiers(buffer);
-	for (; format[j] && format[j] != '%'; j++)
+	for (; format[j]; j++, i = 0)
 	{
-		i = 0;
+		if (possible_modifier(format[j], buffer))
+			continue;
 		while (p[i].type)
 		{
 			if (p[i].type == format[j])
@@ -101,6 +104,13 @@ int to_format(const char *format, print_t p[], buffer_t *buffer, va_list args)
 			}
 			i++;
 		}
+		if (_is_alpha(format[j]))
+		{
+			flag = 1;
+			break;
+		}
 	}
-	return (write_buffer_str_n(buffer, (char *)format, j));
+	if (flag)
+		return (write_buffer_str_n(buffer, (char *)format, j));
+	return (-1);
 }

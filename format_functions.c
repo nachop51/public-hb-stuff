@@ -52,7 +52,7 @@ void p_int(buffer_t *buffer, va_list args)
 	else
 		n = va_arg(args, int);
 
-	if (n > 0 || long_n > 0)
+	if (n >= 0 && long_n >= 0)
 	{
 		if (buffer->mod.flags & FLAG_PLUS)
 			write_buffer(buffer, '+');

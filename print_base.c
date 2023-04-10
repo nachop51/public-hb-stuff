@@ -43,3 +43,22 @@ void print_base_long(unsigned long n, char *base,
 		print_base_long(n / base_len, base, base_len, buffer);
 	write_buffer(buffer, base[n % base_len]);
 }
+
+/**
+ * number_length - get the length of a number
+ * @n: number to get length of
+ * @base_len: length of base
+ * Return: length of number
+ */
+int number_length(long n, int base_len)
+{
+	int len = 0;
+
+	n < 0 ? ++len : 0;
+	while (n / base_len)
+	{
+		n /= base_len;
+		++len;
+	}
+	return (len + 1);
+}
