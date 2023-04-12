@@ -19,12 +19,13 @@ void reset_modifiers(buffer_t *buffer)
  * @j: Index of format string
  *
  * Return: How much to increment i in
- * _printf_helper, or -1 on error
+ * _printf_helper, or 0 on error
  */
 int detect_modifiers(const char *format, buffer_t *buffer, int j)
 {
 	int i = 1, increment = 0;
 
+	reset_modifiers(buffer);
 	for (; format[i] && format[i] != '%' && i < j; i++)
 	{
 		if (is_flag(format[i], buffer))
@@ -54,19 +55,20 @@ int detect_modifiers(const char *format, buffer_t *buffer, int j)
 			i--;
 			continue;
 		}
-		if (is_length(format[i], buffer))
+		else if (is_length(format[i], buffer))
 		{
 			increment++;
 			continue;
 		}
 	}
-
 	return (increment);
 }
 
 /**
  * is_flag - Checks if a character is a flag
  * @c: Character to check
+ * @buffer: Buffer to evaluate
+ *
  * Return: 1 if flag, 0 if not
  */
 int is_flag(char c, buffer_t *buffer)
@@ -74,15 +76,17 @@ int is_flag(char c, buffer_t *buffer)
 	char *flags = "-0+ #";
 	int i = 0;
 
-	if (buffer->mod.width != 0 ||
-		buffer->mod.precision != 0 ||
-		buffer->mod.length != 0)
-		return (0);
+	if (buffer)
+		if (buffer->mod.width != 0 ||
+			buffer->mod.precision != 0 ||
+			buffer->mod.length != 0)
+			return (0);
 	for (; flags[i]; i++)
 	{
 		if (c == flags[i])
 		{
-			buffer->mod.flags |= 1 << i;
+			if (buffer)
+				buffer->mod.flags |= 1 << i;
 			return (1);
 		}
 	}
@@ -92,6 +96,8 @@ int is_flag(char c, buffer_t *buffer)
 /**
  * is_length - Checks if a character is a length
  * @c: Character to check
+ * @buffer: Buffer to evaluate
+ *
  * Return: 1 if length, 0 if not
  */
 int is_length(char c, buffer_t *buffer)
@@ -103,7 +109,8 @@ int is_length(char c, buffer_t *buffer)
 	{
 		if (c == lengths[i])
 		{
-			buffer->mod.length |= 1 << i;
+			if (buffer)
+				buffer->mod.length |= 1 << i;
 			return (1);
 		}
 	}
@@ -113,6 +120,8 @@ int is_length(char c, buffer_t *buffer)
 /**
  * possible_modifier - Check if a character is a possible modifier
  * @c: Character to check
+ * @buffer: Buffer to evaluate
+ *
  * Return: 1 if it is, 0 if it isn't
  */
 int possible_modifier(char c, buffer_t *buffer)

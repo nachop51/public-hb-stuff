@@ -110,7 +110,16 @@ int to_format(const char *format, print_t p[], buffer_t *buffer, va_list args)
 			break;
 		}
 	}
-	if (flag)
-		return (write_buffer_str_n(buffer, (char *)format, j));
-	return (-1);
+	if (!flag)
+		return (-1);
+	write_buffer(buffer, '%');
+	for (j = 1; flag && format[j] && format[j] != '%'; j++)
+	{
+		/* this need better evaluation than this */
+		if (!is_length(format[j], buffer))
+		{
+			write_buffer(buffer, format[j]);
+		}
+	}
+	return (j);
 }

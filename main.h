@@ -17,6 +17,15 @@
 #define LENGTH_H 1
 #define LENGTH_L 2
 
+/**
+ * struct modifiers - Struct modifiers
+ * @flags: The flags
+ * @width: The width
+ * @precision: The precision
+ * @length: The length
+ *
+ * Description: Struct modifiers
+ */
 typedef struct modifiers
 {
 	char flags;
@@ -29,6 +38,8 @@ typedef struct modifiers
  * struct buffer - Struct buffer
  * @buf: The buffer
  * @i: The index
+ * @counter: The counter
+ * @mod: The modifiers
  */
 typedef struct buffer
 {
@@ -69,9 +80,11 @@ int _stdout(char c);
 int _strlen(char *s);
 int _is_alpha(char c);
 int _atoi(const char *s);
+int number_length(long n, int base_len, int flags);
 
 /* Format functions */
 
+void print_number(long n, int base_len, buffer_t *buffer, int upper);
 void p_str(buffer_t *buffer, va_list args);
 void p_char(buffer_t *buffer, va_list args);
 void p_int(buffer_t *buffer, va_list args);
@@ -93,6 +106,7 @@ void print_base_long(unsigned long n, char *base,
 					 int base_len, buffer_t *buffer);
 void print_base_short(unsigned short int n, char *base,
 					  int base_len, buffer_t *buffer);
+void print_symbol(long n, buffer_t *buffer);
 
 /* modifiers.c */
 
@@ -101,6 +115,5 @@ void reset_modifiers(buffer_t *buffer);
 int is_flag(char c, buffer_t *buffer);
 int is_length(char c, buffer_t *buffer);
 int possible_modifier(char c, buffer_t *buffer);
-void call_modifiers(buffer_t *buffer);
 
 #endif /* PRINTF_H */

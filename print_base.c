@@ -45,20 +45,16 @@ void print_base_long(unsigned long n, char *base,
 }
 
 /**
- * number_length - get the length of a number
- * @n: number to get length of
- * @base_len: length of base
- * Return: length of number
+ * print_symbol - print a symbol for a number
+ * @n: number to print symbol for
+ * @buffer: buffer to write to
  */
-int number_length(long n, int base_len)
+void print_symbol(long n, buffer_t *buffer)
 {
-	int len = 0;
-
-	n < 0 ? ++len : 0;
-	while (n / base_len)
-	{
-		n /= base_len;
-		++len;
-	}
-	return (len + 1);
+	if (n < 0)
+		write_buffer(buffer, '-');
+	else if (buffer->mod.flags & FLAG_PLUS)
+		write_buffer(buffer, '+');
+	else if (buffer->mod.flags & FLAG_SPACE)
+		write_buffer(buffer, ' ');
 }
