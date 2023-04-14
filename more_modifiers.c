@@ -67,6 +67,8 @@ void format_number(long num, int base, buffer_t *buffer, int upper, int is_u)
 	/* print the precision using the old length */
 	print_precision(buffer, old_len);
 
+	if (!is_u)
+		num = num < 0 ? -num : num;
 	print_number(num, base, buffer, upper);
 }
 
