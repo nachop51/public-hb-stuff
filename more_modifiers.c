@@ -12,7 +12,7 @@ void print_width(buffer_t *buffer, int length)
 	int i = 0;
 	char c = buffer->mod.flags & FLAG_ZERO ? '0' : ' ';
 
-	if (buffer->mod.flags & FLAG_ZERO && buffer->mod.precision >= 0)
+	if (buffer->mod.flags & FLAG_ZERO && buffer->mod.precision > 0)
 		c = ' ';
 
 	if (buffer->mod.width > length)
@@ -85,6 +85,9 @@ void print_number(unsigned long num, int base_len, buffer_t *buffer, int upper)
 
 	if (upper)
 		base = BASE_16_UPPER;
+
+	if (buffer->mod.precision == 0 && num == 0)
+		return;
 
 	if (buffer->mod.length & LENGTH_L)
 		print_base_long(num, base, base_len, buffer);

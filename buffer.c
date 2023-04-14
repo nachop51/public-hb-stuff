@@ -7,7 +7,8 @@
 void init_buffer(buffer_t *buffer)
 {
 	int i = 0;
-	mod_t mod = {0, 0, 0, 0};
+	mod_t mod = {0, 0, -1, 0};
+	/* flags, width, precision, length */
 
 	buffer->i = 0;
 	buffer->counter = 0;
@@ -57,8 +58,9 @@ int write_buffer_str_n(buffer_t *buffer, char *str, int n)
 {
 	int i = 0;
 
-	while (str[i] && i < n)
+	do
 		write_buffer(buffer, str[i++]);
+	while (str[i] && i < n);
 	return (i);
 }
 

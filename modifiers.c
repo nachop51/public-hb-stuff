@@ -8,7 +8,7 @@ void reset_modifiers(buffer_t *buffer)
 {
 	buffer->mod.flags = 0;
 	buffer->mod.width = 0;
-	buffer->mod.precision = 0;
+	buffer->mod.precision = -1; /* -1 means no precision */
 	buffer->mod.length = 0;
 }
 
@@ -25,7 +25,7 @@ int is_flag(const char *format, buffer_t *buffer)
 	char *flags = "-0+ #";
 
 	if (buffer->mod.width != 0 ||
-		buffer->mod.precision != 0 ||
+		buffer->mod.precision != -1 ||
 		buffer->mod.length != 0)
 		return (0);
 
@@ -58,7 +58,7 @@ int calculate_width(const char *format, buffer_t *buffer, va_list args)
 {
 	int i = 0;
 
-	if (buffer->mod.precision != 0 ||
+	if (buffer->mod.precision != -1 ||
 		buffer->mod.length != 0)
 		return (0);
 

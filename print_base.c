@@ -52,10 +52,37 @@ void print_base_long(unsigned long n, char *base,
  */
 void print_symbol(long n, buffer_t *buffer, int is_u)
 {
-	if (buffer->mod.flags & FLAG_PLUS)
+	if (!is_u && n < 0)
+		write_buffer(buffer, '-');
+	else if (buffer->mod.flags & FLAG_PLUS)
 		write_buffer(buffer, '+');
 	else if (buffer->mod.flags & FLAG_SPACE)
 		write_buffer(buffer, ' ');
-	else if (!is_u && n < 0)
-		write_buffer(buffer, '-');
+}
+
+/**
+ * print_string - print a string
+ * @str: string to print
+ * @buffer: buffer to write to
+ * @is_ch: 1 if character, 0 otherwise
+ */
+void print_string(char *str, buffer_t *buffer, char is_ch)
+{
+	int len = 0;
+
+	if (!is_ch)
+	{
+		if (buffer->mod.precision == 0)
+			return;
+		if (buffer->mod.precision == -1)
+			len = _strlen(str);
+		else
+			len = buffer->mod.precision;
+	}
+	else
+		len = 1;
+
+	print_width(buffer, len);
+
+	write_buffer_str_n(buffer, str, len);
 }

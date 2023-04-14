@@ -91,7 +91,6 @@ int to_format(const char *format, print_t p[], buffer_t *buffer, va_list args)
 	reset_modifiers(buffer);
 
 	i += is_flag(format + i, buffer);
-
 	if ((format[i] >= '0' && format[i] <= '9') || format[i] == '*')
 		i += calculate_width(format + i, buffer, args);
 	if (format[i] == '.')
@@ -167,6 +166,5 @@ int evaluate_modifiers(buffer_t *buffer, const char *format, int len)
 		}
 		i += write_buffer(buffer, format[i]);
 	}
-	/* decrement i by 1 because at the end of the loop gets incremented */
-	return (i - 1);
+	return (i);
 }

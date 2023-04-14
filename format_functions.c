@@ -10,8 +10,12 @@ void p_str(buffer_t *buffer, va_list args)
 	char *str = va_arg(args, char *);
 
 	if (!str)
-		str = "(null)";
-	write_buffer_str_n(buffer, str, _strlen(str));
+	{
+		write_buffer_str_n(buffer, "(null)", 6);
+		return;
+	}
+
+	print_string(str, buffer, 0);
 }
 
 /**
@@ -23,7 +27,7 @@ void p_char(buffer_t *buffer, va_list args)
 {
 	char c = va_arg(args, int);
 
-	write_buffer(buffer, c);
+	print_string(&c, buffer, 1);
 }
 
 /**

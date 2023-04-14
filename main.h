@@ -125,6 +125,7 @@ void print_base_long(unsigned long n, char *base,
 void print_base_short(unsigned short int n, char *base,
 					  int base_len, buffer_t *buffer);
 void print_symbol(long n, buffer_t *buffer, int is_u);
+void print_string(char *str, buffer_t *buffer, char is_ch);
 
 /* modifiers.c */
 
