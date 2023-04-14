@@ -66,19 +66,23 @@ int _atoi(const char *s)
  * number_length - get the length of a number
  * @n: number to get length of
  * @base_len: length of base
- * @flags: flags
+ * @is_u: 1 if unsigned, 0 otherwise
  *
  * Return: length of number
  */
-int number_length(long n, int base_len)
+int number_length(long n, int base_len, int is_u)
 {
 	int len = 1;
+	unsigned long un = n;
 
-	/* len starts in 1 because if we have a number < base_len, we need to
-	 * count at least one digit */
-	while (n / base_len)
+	if (n < 0 && !is_u)
+		un = -n;
+
+	/* len starts in 1 because if we have a number < base_len, we need to */
+	/* count at least one digit */
+	while (un / base_len)
 	{
-		n /= base_len;
+		un /= base_len;
 		++len;
 	}
 

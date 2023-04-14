@@ -48,13 +48,14 @@ void print_base_long(unsigned long n, char *base,
  * print_symbol - print a symbol for a number
  * @n: number to print symbol for
  * @buffer: buffer to write to
+ * @is_u: 1 if unsigned, 0 otherwise
  */
-void print_symbol(long n, buffer_t *buffer)
+void print_symbol(long n, buffer_t *buffer, int is_u)
 {
-	if (n < 0)
-		write_buffer(buffer, '-');
-	else if (buffer->mod.flags & FLAG_PLUS)
+	if (buffer->mod.flags & FLAG_PLUS)
 		write_buffer(buffer, '+');
 	else if (buffer->mod.flags & FLAG_SPACE)
 		write_buffer(buffer, ' ');
+	else if (!is_u && n < 0)
+		write_buffer(buffer, '-');
 }

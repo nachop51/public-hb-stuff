@@ -27,6 +27,9 @@
 #define BASE_16 "0123456789abcdef"
 #define BASE_16_UPPER "0123456789ABCDEF"
 
+#define UNSIGNED 1
+#define SIGNED 0
+
 #define UPPER 1
 #define LOWER 0
 
@@ -45,7 +48,6 @@ typedef struct modifiers
 	int width;
 	int precision;
 	char length;
-	char specifier;
 } mod_t;
 
 /**
@@ -97,7 +99,7 @@ int _stdout(char c);
 int _strlen(char *s);
 int _is_alpha(char c);
 int _atoi(const char *s);
-int number_length(long n, int base_len);
+int number_length(long n, int base_len, int is_u);
 
 /* Format functions */
 
@@ -122,7 +124,7 @@ void print_base_long(unsigned long n, char *base,
 					 int base_len, buffer_t *buffer);
 void print_base_short(unsigned short int n, char *base,
 					  int base_len, buffer_t *buffer);
-void print_symbol(long n, buffer_t *buffer);
+void print_symbol(long n, buffer_t *buffer, int is_u);
 
 /* modifiers.c */
 
@@ -136,8 +138,8 @@ int is_length(char c, buffer_t *buffer);
 
 void print_width(buffer_t *buffer, int length);
 void print_precision(buffer_t *buffer, int length);
-int has_sign(long int n, buffer_t *buffer);
-void format_number(long int long_n, int base, buffer_t *buffer, int upper);
-void print_number(long n, int base_len, buffer_t *buffer, int upper);
+int has_sign(long int n, buffer_t *buffer, int is_u);
+void format_number(long num, int base, buffer_t *buffer, int upper, int is_u);
+void print_number(unsigned long n, int base_len, buffer_t *buffer, int upper);
 
 #endif /* PRINTF_H */

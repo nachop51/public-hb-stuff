@@ -10,12 +10,11 @@ void reset_modifiers(buffer_t *buffer)
 	buffer->mod.width = 0;
 	buffer->mod.precision = 0;
 	buffer->mod.length = 0;
-	buffer->mod.specifier = 0;
 }
 
 /**
  * is_flag - Checks if a character is a flag
- * @c: Character to check
+ * @format: Format string
  * @buffer: Buffer to evaluate
  *
  * Return: 1 if flag, 0 if not

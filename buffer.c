@@ -7,7 +7,7 @@
 void init_buffer(buffer_t *buffer)
 {
 	int i = 0;
-	mod_t mod = {0, 0, 0, 0, 0};
+	mod_t mod = {0, 0, 0, 0};
 
 	buffer->i = 0;
 	buffer->counter = 0;
@@ -62,6 +62,13 @@ int write_buffer_str_n(buffer_t *buffer, char *str, int n)
 	return (i);
 }
 
+/**
+ * write_buffer_int - Writes an integer to a buffer
+ * @buffer: buffer to write to
+ * @n: Number to write
+ *
+ * Return: Number of characters printed
+ */
 int write_buffer_int(buffer_t *buffer, int n)
 {
 	int i = 1;

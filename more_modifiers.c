@@ -38,76 +38,74 @@ void print_precision(buffer_t *buffer, int length)
 
 /**
  * format_number - Format a number
- * @n: number to format
+ * @num: number to format
  * @base: base of the number
  * @buffer: buffer to write to
+ * @upper: 1 if uppercase, 0 otherwise
+ * @is_u: 1 if unsigned, 0 otherwise
  */
-void format_number(long int long_n, int base, buffer_t *buffer, int upper)
+void format_number(long num, int base, buffer_t *buffer, int upper, int is_u)
 {
 	int n_len = 0, old_len = 0;
 
-	n_len = number_length(long_n, base);
+	n_len = number_length(num, base, is_u);
+	printf("n_len: %d\n", n_len);
 	old_len = n_len;
 
 	if (buffer->mod.precision > n_len)
 		n_len = buffer->mod.precision;
 
-	n_len += has_sign(long_n, buffer);
+	n_len += has_sign(num, buffer, is_u);
 
 	if (buffer->mod.flags & FLAG_ZERO)
-	{
-		print_symbol(long_n, buffer);
-		print_width(buffer, n_len);
-	}
-	else
-	{
-		print_width(buffer, n_len);
-		print_symbol(long_n, buffer);
-	}
+		print_symbol(num, buffer, is_u);
+
+	print_width(buffer, n_len);
+
+	if (!(buffer->mod.flags & FLAG_ZERO))
+		print_symbol(num, buffer, is_u);
 
 	/* print the precision using the old length */
 	print_precision(buffer, old_len);
 
-	print_number(long_n, base, buffer, upper);
+	print_number(num, base, buffer, upper);
 }
 
 /**
  * print_number - print a number in a given base
- * @n: number to print
+ * @num: number to print
  * @base_len: length of base
  * @buffer: buffer to write to
+ * @upper: 1 if uppercase, 0 otherwise
  */
-void print_number(long n, int base_len, buffer_t *buffer, int upper)
+void print_number(unsigned long num, int base_len, buffer_t *buffer, int upper)
 {
 	char *base = BASE_16;
-	unsigned long unsigned_n = n;
 
 	if (upper)
 		base = BASE_16_UPPER;
 
-	if (n < 0)
-		unsigned_n = -n;
-
 	if (buffer->mod.length & LENGTH_L)
-		print_base_long(unsigned_n, base, base_len, buffer);
+		print_base_long(num, base, base_len, buffer);
 	else if (buffer->mod.length & LENGTH_H)
-		print_base_short(unsigned_n, base, base_len, buffer);
+		print_base_short(num, base, base_len, buffer);
 	else
-		print_base(unsigned_n, base, base_len, buffer);
+		print_base(num, base, base_len, buffer);
 }
 
 /**
  * has_sign - Determine if a number has a sign
  * @n: number to check
  * @buffer: buffer to write to
+ * @is_u: 1 if unsigned, 0 otherwise
  *
  * Return: 1 if number has a sign, 0 otherwise
  */
-int has_sign(long int n, buffer_t *buffer)
+int has_sign(long int n, buffer_t *buffer, int is_u)
 {
 	char sign = 0;
 
-	if (n >= 0)
+	if (is_u)
 	{
 		if (buffer->mod.flags & FLAG_PLUS)
 			++sign;
@@ -115,6 +113,16 @@ int has_sign(long int n, buffer_t *buffer)
 			++sign;
 	}
 	else
-		++sign;
+	{
+		if (n >= 0)
+		{
+			if (buffer->mod.flags & FLAG_PLUS)
+				++sign;
+			else if (buffer->mod.flags & FLAG_SPACE)
+				++sign;
+		}
+		else
+			++sign;
+	}
 	return (sign);
 }

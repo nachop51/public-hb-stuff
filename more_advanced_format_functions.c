@@ -109,5 +109,5 @@ void p_u_int(buffer_t *buffer, va_list args)
 	else
 		long_n = va_arg(args, unsigned int);
 
-	format_number(long_n, 10, buffer, LOWER);
+	format_number(long_n, 10, buffer, LOWER, UNSIGNED);
 }

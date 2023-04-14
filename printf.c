@@ -26,7 +26,8 @@ int _printf(const char *format, ...)
 		{'r', p_reverse},
 		{'S', p_string_ascii},
 		{'R', p_rot13},
-		{'\0', NULL}};
+		{'\0', NULL}
+	};
 	buffer_t buffer = {0};
 
 	if (!format)
@@ -112,9 +113,8 @@ int to_format(const char *format, print_t p[], buffer_t *buffer, va_list args)
 
 /**
  * eval_specifier - Print a formatted string to stdout
- * @buffer: Buffer to write to
+ * @specifier: Specifier to evaluate
  * @p: Array of print_t structs
- * @args: Arguments to format string
  *
  * Return: 1 on success, 0 on failure
  */
@@ -135,6 +135,7 @@ void (*eval_specifier(char specifier, print_t p[]))(buffer_t *, va_list)
  * evaluate_modifiers - Print a formatted string to stdout
  * @buffer: Buffer to write to
  * @format: Format string
+ * @len: Length of format string
  *
  * Return: 1 on success, 0 on failure
  */
@@ -164,7 +165,7 @@ int evaluate_modifiers(buffer_t *buffer, const char *format, int len)
 			i++;
 			continue;
 		}
-		write_buffer(buffer, format[i]);
+		i += write_buffer(buffer, format[i]);
 	}
 	/* decrement i by 1 because at the end of the loop gets incremented */
 	return (i - 1);
