@@ -6,7 +6,11 @@
 #include <unistd.h>
 #include <stdarg.h>
 
+/* Macros */
+
 #define BUFFER_SIZE 1024
+
+/* Define the flags to easily check them using bitwise operators */
 
 #define FLAG_MINUS 1
 #define FLAG_ZERO 2
@@ -16,6 +20,15 @@
 
 #define LENGTH_H 1
 #define LENGTH_L 2
+
+/* Define bases */
+
+#define BASE_10 "0123456789"
+#define BASE_16 "0123456789abcdef"
+#define BASE_16_UPPER "0123456789ABCDEF"
+
+#define UPPER 1
+#define LOWER 0
 
 /**
  * struct modifiers - Struct modifiers
@@ -32,6 +45,7 @@ typedef struct modifiers
 	int width;
 	int precision;
 	char length;
+	char specifier;
 } mod_t;
 
 /**
@@ -67,12 +81,15 @@ void init_buffer(buffer_t *buffer);
 void flush_buffer(buffer_t *buffer);
 int write_buffer(buffer_t *buffer, char c);
 int write_buffer_str_n(buffer_t *buffer, char *str, int n);
+int write_buffer_int(buffer_t *buffer, int n);
 
 /* printf.c */
 
 int _printf(const char *format, ...);
 int _printf_helper(const char *format, print_t p[], buffer_t *, va_list args);
 int to_format(const char *format, print_t p[], buffer_t *buffer, va_list args);
+void (*eval_specifier(char specifier, print_t p[]))(buffer_t *, va_list);
+int evaluate_modifiers(buffer_t *buffer, const char *format, int len);
 
 /* strings.c */
 
@@ -80,11 +97,10 @@ int _stdout(char c);
 int _strlen(char *s);
 int _is_alpha(char c);
 int _atoi(const char *s);
-int number_length(long n, int base_len, int flags);
+int number_length(long n, int base_len);
 
 /* Format functions */
 
-void print_number(long n, int base_len, buffer_t *buffer, int upper);
 void p_str(buffer_t *buffer, va_list args);
 void p_char(buffer_t *buffer, va_list args);
 void p_int(buffer_t *buffer, va_list args);
@@ -110,10 +126,18 @@ void print_symbol(long n, buffer_t *buffer);
 
 /* modifiers.c */
 
-int detect_modifiers(const char *format, buffer_t *buffer, int j);
 void reset_modifiers(buffer_t *buffer);
-int is_flag(char c, buffer_t *buffer);
+int is_flag(const char *format, buffer_t *buffer);
+int calculate_width(const char *format, buffer_t *buffer, va_list args);
+int calculate_precision(const char *format, buffer_t *buffer, va_list args);
 int is_length(char c, buffer_t *buffer);
-int possible_modifier(char c, buffer_t *buffer);
+
+/* more_modifiers.c */
+
+void print_width(buffer_t *buffer, int length);
+void print_precision(buffer_t *buffer, int length);
+int has_sign(long int n, buffer_t *buffer);
+void format_number(long int long_n, int base, buffer_t *buffer, int upper);
+void print_number(long n, int base_len, buffer_t *buffer, int upper);
 
 #endif /* PRINTF_H */

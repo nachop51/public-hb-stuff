@@ -102,10 +102,12 @@ void p_string_ascii(buffer_t *buffer, va_list args)
  */
 void p_u_int(buffer_t *buffer, va_list args)
 {
+	unsigned long long_n = 0;
+
 	if (buffer->mod.length & LENGTH_L)
-		print_base_long(va_arg(args, unsigned long), "0123456789", 10, buffer);
-	else if (buffer->mod.length & LENGTH_H)
-		print_base_short(va_arg(args, unsigned int), "0123456789", 10, buffer);
+		long_n = va_arg(args, unsigned long);
 	else
-		print_base(va_arg(args, unsigned int), "0123456789", 10, buffer);
+		long_n = va_arg(args, unsigned int);
+
+	format_number(long_n, 10, buffer, LOWER);
 }

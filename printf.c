@@ -1,11 +1,11 @@
 #include "main.h"
 
 /**
- * _printf - Print a formatted string to stdout
+ * _printf - Prints a formatted string to the standard output
  * @format: Format string
  * @...: Arguments to format string
  *
- * Return: Number of characters printed
+ * Return: Number of characters printed or -1 on error
  */
 int _printf(const char *format, ...)
 {
@@ -26,8 +26,7 @@ int _printf(const char *format, ...)
 		{'r', p_reverse},
 		{'S', p_string_ascii},
 		{'R', p_rot13},
-		{'\0', NULL}
-	};
+		{'\0', NULL}};
 	buffer_t buffer = {0};
 
 	if (!format)
@@ -85,41 +84,88 @@ int _printf_helper(const char *format, print_t p[],
  */
 int to_format(const char *format, print_t p[], buffer_t *buffer, va_list args)
 {
-	int i = 0, j = 1, increment = 2; /* j starts in 1 beacuse 0 is the '%' */
-	int flag = 0;
-	/* increment starts in 2 because we already have the '%' and the type */
+	int i = 1; /* 0 -> '%' */
+	void (*func)(buffer_t *, va_list);
 
 	reset_modifiers(buffer);
-	for (; format[j]; j++, i = 0)
-	{
-		if (possible_modifier(format[j], buffer))
-			continue;
-		while (p[i].type)
-		{
-			if (p[i].type == format[j])
-			{
-				increment += detect_modifiers(format, buffer, j);
-				p[i].f(buffer, args);
-				return (increment);
-			}
-			i++;
-		}
-		if (_is_alpha(format[j]))
-		{
-			flag = 1;
-			break;
-		}
-	}
-	if (!flag)
+
+	i += is_flag(format + i, buffer);
+
+	if ((format[i] >= '0' && format[i] <= '9') || format[i] == '*')
+		i += calculate_width(format + i, buffer, args);
+	if (format[i] == '.')
+		i += calculate_precision(format + i, buffer, args);
+	i += is_length(format[i], buffer);
+
+	if (format[i] == '\0')
 		return (-1);
-	write_buffer(buffer, '%');
-	for (j = 1; flag && format[j] && format[j] != '%'; j++)
+
+	func = eval_specifier(format[i], p);
+	if (func)
 	{
-		/* this need better evaluation than this */
-		if (!is_length(format[j], buffer))
-		{
-			write_buffer(buffer, format[j]);
-		}
+		func(buffer, args);
+		/* i + 1 this +1 is the specifier itself */
+		return (i + 1);
 	}
-	return (j);
+	return (evaluate_modifiers(buffer, format, i));
+}
+
+/**
+ * eval_specifier - Print a formatted string to stdout
+ * @buffer: Buffer to write to
+ * @p: Array of print_t structs
+ * @args: Arguments to format string
+ *
+ * Return: 1 on success, 0 on failure
+ */
+void (*eval_specifier(char specifier, print_t p[]))(buffer_t *, va_list)
+{
+	int i = 0;
+
+	while (p[i].type)
+	{
+		if (p[i].type == specifier)
+			return (p[i].f);
+		i++;
+	}
+	return (0);
+}
+
+/**
+ * evaluate_modifiers - Print a formatted string to stdout
+ * @buffer: Buffer to write to
+ * @format: Format string
+ *
+ * Return: 1 on success, 0 on failure
+ */
+int evaluate_modifiers(buffer_t *buffer, const char *format, int len)
+{
+	int i = 0;
+
+	for (; i < len; i++)
+	{
+		if (format[i] == ' ' || format[i] == '+')
+		{
+			while (format[i] == ' ' || format[i] == '+')
+				i++;
+			write_buffer(buffer, ' ');
+			continue;
+		}
+		if (format[i] == '.')
+		{
+			++i, write_buffer(buffer, '.');
+			write_buffer_int(buffer, buffer->mod.precision);
+			while (format[i] >= '0' && format[i] <= '9')
+				i++;
+			continue;
+		}
+		if (format[i] == 'h' || format[i] == 'l')
+		{
+			i++;
+			continue;
+		}
+		write_buffer(buffer, format[i]);
+	}
+	/* decrement i by 1 because at the end of the loop gets incremented */
+	return (i - 1);
 }

@@ -70,23 +70,17 @@ int _atoi(const char *s)
  *
  * Return: length of number
  */
-int number_length(long n, int base_len, int flags)
+int number_length(long n, int base_len)
 {
-	int len = 0;
+	int len = 1;
 
-	if (n >= 0)
-	{
-		if (flags & FLAG_PLUS)
-			++len;
-		else if (flags & FLAG_SPACE)
-			++len;
-	}
-	else
-		++len;
+	/* len starts in 1 because if we have a number < base_len, we need to
+	 * count at least one digit */
 	while (n / base_len)
 	{
 		n /= base_len;
 		++len;
 	}
-	return (len + 1);
+
+	return (len);
 }

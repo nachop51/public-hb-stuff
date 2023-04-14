@@ -10,58 +10,7 @@ void reset_modifiers(buffer_t *buffer)
 	buffer->mod.width = 0;
 	buffer->mod.precision = 0;
 	buffer->mod.length = 0;
-}
-
-/**
- * detect_modifiers - Detects modifiers in a format string
- * @format: Format string
- * @buffer: Buffer to write to
- * @j: Index of format string
- *
- * Return: How much to increment i in
- * _printf_helper, or 0 on error
- */
-int detect_modifiers(const char *format, buffer_t *buffer, int j)
-{
-	int i = 1, increment = 0;
-
-	reset_modifiers(buffer);
-	for (; format[i] && format[i] != '%' && i < j; i++)
-	{
-		if (is_flag(format[i], buffer))
-		{
-			increment++;
-			continue;
-		}
-		else if (format[i] >= '0' && format[i] <= '9')
-		{
-			buffer->mod.width = _atoi(format + i);
-			while (format[i] >= '0' && format[i] <= '9')
-			{
-				i++;
-				increment++;
-			}
-			i--;
-			continue;
-		}
-		else if (format[i] == '.')
-		{
-			buffer->mod.precision = _atoi(format + i + 1);
-			while (format[i] >= '0' && format[i] <= '9')
-			{
-				i++;
-				increment++;
-			}
-			i--;
-			continue;
-		}
-		else if (is_length(format[i], buffer))
-		{
-			increment++;
-			continue;
-		}
-	}
-	return (increment);
+	buffer->mod.specifier = 0;
 }
 
 /**
@@ -71,26 +20,91 @@ int detect_modifiers(const char *format, buffer_t *buffer, int j)
  *
  * Return: 1 if flag, 0 if not
  */
-int is_flag(char c, buffer_t *buffer)
+int is_flag(const char *format, buffer_t *buffer)
 {
+	int i = 0, j = 0, found_flag = 1, total_flags = 0;
 	char *flags = "-0+ #";
-	int i = 0;
 
-	if (buffer)
-		if (buffer->mod.width != 0 ||
-			buffer->mod.precision != 0 ||
-			buffer->mod.length != 0)
-			return (0);
-	for (; flags[i]; i++)
+	if (buffer->mod.width != 0 ||
+		buffer->mod.precision != 0 ||
+		buffer->mod.length != 0)
+		return (0);
+
+	for (i = 0; format[i] && found_flag; i++)
 	{
-		if (c == flags[i])
+		found_flag = 0;
+		for (j = 0; flags[j]; j++)
 		{
-			if (buffer)
-				buffer->mod.flags |= 1 << i;
-			return (1);
+			if (format[i] == flags[j])
+			{
+				buffer->mod.flags |= 1 << j;
+				found_flag = 1, total_flags++;
+				break;
+			}
 		}
 	}
-	return (0);
+	return (total_flags);
+}
+
+/**
+ * calculate_width - Calculates the width of a format string
+ * @format: Format string
+ * @buffer: Buffer to evaluate
+ * @args: Arguments to format string
+ *
+ * Return: How much to increment i in
+ * _printf_helper, or 0 on error
+ */
+int calculate_width(const char *format, buffer_t *buffer, va_list args)
+{
+	int i = 0;
+
+	if (buffer->mod.precision != 0 ||
+		buffer->mod.length != 0)
+		return (0);
+
+	if (format[i] == '*')
+	{
+		buffer->mod.width = va_arg(args, int);
+		if (buffer->mod.width < 0)
+			buffer->mod.width = 0;
+		return (1);
+	}
+
+	buffer->mod.width = _atoi(format + i);
+	while (format[i] >= '0' && format[i] <= '9')
+		i++;
+	return (i);
+}
+
+/**
+ * calculate_precision - Calculates the precision of a format string
+ * @format: Format string
+ * @buffer: Buffer to evaluate
+ * @args: Arguments to format string
+ *
+ * Return: How much to increment i in
+ * _printf_helper, or 0 on error
+ */
+int calculate_precision(const char *format, buffer_t *buffer, va_list args)
+{
+	int i = 1; /* 1 for the '.' */
+
+	if (buffer->mod.length != 0)
+		return (0);
+
+	if (format[i] == '*')
+	{
+		buffer->mod.precision = va_arg(args, int);
+		if (buffer->mod.precision < 0)
+			buffer->mod.precision = 0;
+		return (i + 1); /* 1 for the '*' */
+	}
+
+	buffer->mod.precision = _atoi(format + i);
+	while (format[i] >= '0' && format[i] <= '9')
+		i++;
+	return (i);
 }
 
 /**
@@ -109,25 +123,9 @@ int is_length(char c, buffer_t *buffer)
 	{
 		if (c == lengths[i])
 		{
-			if (buffer)
-				buffer->mod.length |= 1 << i;
+			buffer->mod.length |= 1 << i;
 			return (1);
 		}
 	}
-	return (0);
-}
-
-/**
- * possible_modifier - Check if a character is a possible modifier
- * @c: Character to check
- * @buffer: Buffer to evaluate
- *
- * Return: 1 if it is, 0 if it isn't
- */
-int possible_modifier(char c, buffer_t *buffer)
-{
-	if (is_flag(c, buffer) || is_length(c, buffer) ||
-		(c >= '0' && c <= '9') || c == '.')
-		return (1);
 	return (0);
 }
