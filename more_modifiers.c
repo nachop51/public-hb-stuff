@@ -49,7 +49,6 @@ void format_number(long num, int base, buffer_t *buffer, int upper, int is_u)
 	int n_len = 0, old_len = 0;
 
 	n_len = number_length(num, base, is_u);
-	printf("n_len: %d\n", n_len);
 	old_len = n_len;
 
 	if (buffer->mod.precision > n_len)
