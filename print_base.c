@@ -82,7 +82,9 @@ void print_string(char *str, buffer_t *buffer, char is_ch)
 	else
 		len = 1;
 
-	print_width(buffer, len);
-
+	if (!(buffer->mod.flags & FLAG_MINUS))
+		print_width(buffer, len);
 	write_buffer_str_n(buffer, str, len);
+	if (buffer->mod.flags & FLAG_MINUS)
+		print_width(buffer, len);
 }

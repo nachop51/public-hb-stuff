@@ -59,7 +59,8 @@ void format_number(long num, int base, buffer_t *buffer, int upper, int is_u)
 	if (buffer->mod.flags & FLAG_ZERO)
 		print_symbol(num, buffer, is_u);
 
-	print_width(buffer, n_len);
+	if (!(buffer->mod.flags & FLAG_MINUS))
+		print_width(buffer, n_len);
 
 	if (!(buffer->mod.flags & FLAG_ZERO))
 		print_symbol(num, buffer, is_u);
@@ -70,6 +71,8 @@ void format_number(long num, int base, buffer_t *buffer, int upper, int is_u)
 	if (!is_u)
 		num = num < 0 ? -num : num;
 	print_number(num, base, buffer, upper);
+	if (buffer->mod.flags & FLAG_MINUS)
+		print_width(buffer, n_len);
 }
 
 /**

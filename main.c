@@ -10,31 +10,31 @@
 int main(void)
 {
 	int len, len2;
-	_printf("%+d\n", 30);
-	printf("%+d\n", 30);
-	_printf("%+ d\n", 30);
-	printf("%+ d\n", 30);
-	_printf("% +d\n", 30);
-	printf("% +d\n", 30);
-	_printf("% d\n", 30);
-	printf("% d\n", 30);
 
-	_printf("%+d\n", -30);
-	printf("%+d\n", -30);
-	_printf("%+ d\n", -30);
-	printf("%+ d\n", -30);
-	_printf("% +d\n", -30);
-	printf("% +d\n", -30);
-	_printf("% d\n", -30);
-	printf("% d\n", -30);
-
-	len = _printf("% 05d\n", 1234);
-	len2 = printf("% 05d\n", 1234);
+	len = _printf("%-6d", 0);
+	len2 = printf("%-6d", 0);
 	fflush(stdout);
 	if (len != len2)
 	{
 		printf("Lengths differ.\n");
-		printf("len: %d, len2: %d\n", len, len2);
+		fflush(stdout);
+		return (1);
+	}
+	len = _printf("%-6i", -1024);
+	len2 = printf("%-6i", -1024);
+	fflush(stdout);
+	if (len != len2)
+	{
+		printf("Lengths differ.\n");
+		fflush(stdout);
+		return (1);
+	}
+	len = _printf("In the middle %-6X of a sentence.\n", 1024);
+	len2 = printf("In the middle %-6X of a sentence.\n", 1024);
+	fflush(stdout);
+	if (len != len2)
+	{
+		printf("Lengths differ.\n");
 		fflush(stdout);
 		return (1);
 	}
