@@ -14,6 +14,8 @@ void p_str(buffer_t *buffer, va_list args)
 		write_buffer_str_n(buffer, "(null)", 6);
 		return;
 	}
+	else if (!*str)
+		return;
 
 	print_string(str, buffer, 0);
 }

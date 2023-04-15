@@ -70,11 +70,13 @@ int _atoi(const char *s)
  *
  * Return: length of number
  */
-int number_length(long n, int base_len, int is_u)
+int number_length(long n, int base_len, int is_u, int precision)
 {
 	int len = 1;
 	unsigned long un = n;
 
+	if (n == 0 && precision == 0)
+		return (0);
 	if (n < 0 && !is_u)
 		un = -n;
 

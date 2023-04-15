@@ -99,7 +99,7 @@ int _stdout(char c);
 int _strlen(char *s);
 int _is_alpha(char c);
 int _atoi(const char *s);
-int number_length(long n, int base_len, int is_u);
+int number_length(long n, int base_len, int is_u, int precision);
 
 /* Format functions */
 

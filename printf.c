@@ -107,7 +107,8 @@ int to_format(const char *format, print_t p[], buffer_t *buffer, va_list args)
 		/* i + 1 this +1 is the specifier itself */
 		return (i + 1);
 	}
-	return (evaluate_modifiers(buffer, format, i));
+	/* Sum the specifier */
+	return (evaluate_modifiers(buffer, format, i + 1));
 }
 
 /**
@@ -164,7 +165,7 @@ int evaluate_modifiers(buffer_t *buffer, const char *format, int len)
 			i++;
 			continue;
 		}
-		i += write_buffer(buffer, format[i]);
+		write_buffer(buffer, format[i]);
 	}
 	return (i);
 }

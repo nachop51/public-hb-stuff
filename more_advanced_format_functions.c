@@ -54,15 +54,21 @@ void p_reverse(buffer_t *buffer, va_list args)
 void p_pointer(buffer_t *buffer, va_list args)
 {
 	void *p = va_arg(args, void *);
-	unsigned long int addr = (unsigned long int)p;
+	unsigned long int addr = (unsigned long int)p, len = 0;
 
 	if (!p)
 	{
 		write_buffer_str_n(buffer, "(nil)", 6);
 		return;
 	}
-	write_buffer(buffer, '0'), write_buffer(buffer, 'x');
+	len = number_length(addr, 16, UNSIGNED, buffer->mod.precision);
+
+	if (!(buffer->mod.flags & FLAG_MINUS))
+		print_width(buffer, len + 2);
+	write_buffer_str_n(buffer, "0x", 2);
 	print_base_long(addr, "0123456789abcdef", 16, buffer);
+	if (buffer->mod.flags & FLAG_MINUS)
+		print_width(buffer, len + 2);
 }
 
 /**
