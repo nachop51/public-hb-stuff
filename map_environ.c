@@ -4,7 +4,7 @@
  * map_environ - Maps environ to a hash table
  * Return: Hash table that contains environ variables
  */
-hash_table_t *map_environ(void)
+hash_table_t *map_environ(char **av)
 {
 	ulint i = 0;
 	hash_table_t *new = NULL;
@@ -26,7 +26,7 @@ hash_table_t *map_environ(void)
 		free(dup);
 		i++;
 	}
-
+	hash_table_set(new, "SHELL", av[0]);
 	return (new);
 }
 

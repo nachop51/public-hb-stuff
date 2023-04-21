@@ -85,6 +85,7 @@ typedef struct list_s
  * @err: error
  * @fd: file descriptor
  * @tty: tty
+ * @line: line number
  * Description: Command struct
  */
 typedef struct cmd_s
@@ -92,7 +93,7 @@ typedef struct cmd_s
 	list_t *list, *path;
 	hash_table_t *env;
 	char **vector, *buffer;
-	int err, fd, tty;
+	int err, fd, tty, line;
 } cmd_t;
 
 /**
@@ -109,7 +110,7 @@ typedef struct builtin_s
 
 /* Hash tables implementation */
 
-hash_table_t *map_environ(void);
+hash_table_t *map_environ(char **av);
 hash_table_t *hash_table_create(ulint);
 ulint hash_djb2(ucchar *);
 ulint key_index(ucchar *, ulint);

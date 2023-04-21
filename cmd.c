@@ -14,7 +14,7 @@ cmd_t *setup_cmd(char **av)
 		return (NULL);
 	cmd->vector = NULL, cmd->list = NULL, cmd->err = 0;
 	cmd->buffer = NULL;
-	cmd->env = map_environ();
+	cmd->env = map_environ(av);
 	cmd->tty = isatty(STDIN_FILENO) == INTERACTIVE_MODE;
 	cmd->path = map_path(_getenv(cmd->env, "PATH"));
 	if (av[1])

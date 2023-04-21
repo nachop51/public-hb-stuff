@@ -9,12 +9,12 @@
  */
 int main(__attribute__((unused)) int ac, char **av)
 {
-	int i = 0, failed = 0;
+	int failed = 0;
 	cmd_t *cmd = NULL;
 	size_t n = 0;
 
 	cmd = setup_cmd(av);
-	for (; 1; i++)
+	for (cmd->line = 1; 1; cmd->line++)
 	{
 		if (cmd->tty == INTERACTIVE_MODE)
 			write(STDOUT_FILENO, PROMPT, _strlen(PROMPT));
@@ -66,8 +66,10 @@ int evaluate_input(cmd_t **cmd)
 	ret = solve_path(cmd);
 	if (ret == 1 && !valid_file((*cmd)->list->s))
 	{
-		perror((*cmd)->list->s), (*cmd)->err = 127; /* Command not found */
-		return (0);									/* Not found error */
+		dprintf(STDERR_FILENO, "%s: %d: %s: not found\n", hash_table_get((*cmd)->env, "SHELL"), (*cmd)->line, (*cmd)->list->s);
+		(*cmd)->err = 127; /* Command not found */
+		(*cmd)->err = 127; /* Command not found */
+		return (0);		   /* Not found error */
 	}
 
 	return (1);
