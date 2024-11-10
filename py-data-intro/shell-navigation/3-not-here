@@ -1,0 +1,2 @@
+#!/bin/bash
+cd root && mv not_here /tmp/right_school
